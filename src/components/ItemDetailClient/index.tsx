@@ -126,3 +126,5 @@ export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
         </div>
     );
 }
+
+//ItemDetailClient → displays the full recipe.

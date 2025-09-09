@@ -33,7 +33,7 @@ export default function Home() {
           ) : (
             // If user exists → show welcome animation then dashboard
             <WelcomeDashboard>
-              <div className="text-center">
+              <div className="text-center mt-60 mb-10">
                 <h1 className="text-3xl font-bold text-gray-800">
                   Your Recipe Dashboard
                 </h1>

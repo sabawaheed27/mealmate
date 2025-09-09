@@ -21,7 +21,7 @@ async function getCategories(): Promise<Category[]> {
   }
 }
 
-export default async function CategoriesPage() {
+export default async function CategoriesPage() { //CategoriesPage on the server.
   const categories = await getCategories();
   return <CategoriesClient initialCategories={categories} />;
 }

@@ -26,8 +26,8 @@ async function getMealById(id: string): Promise<Meal | null> {
 
 export default async function ItemPage({ params }: ItemPageProps) {
   const { id } = await params;
-  const meal = await getMealById(id);
-
+  const meal = await getMealById(id); //function uses fetch and returns a Promise.
+                                        //getMealById(id) is asynchronous → you need await.
   if (!meal) {
     return (
       <div className="text-center p-10">
@@ -38,3 +38,4 @@ export default async function ItemPage({ params }: ItemPageProps) {
 
   return <ItemDetailClient meal={meal} />;
 }
+//ItemPage (this file) → fetches that single meal by ID.

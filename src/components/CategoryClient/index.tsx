@@ -19,14 +19,14 @@ interface CategoriesClientProps {
 }
 
 export default function CategoriesClient({
-  initialCategories,
+  initialCategories, //comes from server page(CategoryPage)
 }: CategoriesClientProps) {
-  const userContext = useContext(UserContext);
+  const userContext = useContext(UserContext);//gives access to the global user state
 
   if (!userContext) {
-    return null; // Or a loading spinner
+    return null; 
   }
-  const { user, setUser } = userContext;
+  const { user, setUser } = userContext; //user contains things like favouriteCategory: string[]
 
   const toggleFavCategory = (catName: string) => {
     if (!user || !setUser) return;
@@ -67,7 +67,9 @@ export default function CategoriesClient({
               whileHover={{ scale: 1.03 }}
               className="flex flex-col justify-between bg-gray-900 rounded-xl shadow-md overflow-hidden hover:shadow-teal-500/40 transition-all duration-300">
               <Link href={`/categories/${cat.strCategory}`} className="block">
-                <Image
+                
+                <Image //clicking the image goes to /categories/[category]
+                //that route is handled by your CategoryDetailPage
                   src={cat.strCategoryThumb}
                   alt={cat.strCategory}
                   width={400}
@@ -89,7 +91,7 @@ export default function CategoriesClient({
                     className="flex-1 bg-teal-600 hover:bg-teal-500 text-white px-3 py-2 rounded-md text-center font-semibold transition-all duration-300">
                     Explore
                   </Link>
-                  <button
+                  <button //navigates to category detail page
                     onClick={() => toggleFavCategory(cat.strCategory)}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-md font-semibold transition-all duration-300 ${
                       isSaved

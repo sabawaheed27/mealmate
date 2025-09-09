@@ -20,10 +20,10 @@ export default function Footer() {
         </svg>
       </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row justify-between items-center gap-6 relative z-10">
+      <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col items-center gap-6 relative z-10">
 
         {/* Logo / Branding */}
-        <div className="flex items-center gap-2">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-6 w-full">
           <Utensils className="w-7 h-7 text-orange-300" />
           <span className="font-bold text-xl sm:text-2xl">FlavorQuest</span>
         </div>
@@ -60,7 +60,7 @@ export default function Footer() {
       </div>
 
       {/* Credits */}
-      <div className="text-center text-gray-200 text-sm mt-4 pb-4 relative z-10">
+      <div className="text-center text-gray-200 text-sm">
         Powered by{" "}
         <Link
           href="https://www.themealdb.com/"
