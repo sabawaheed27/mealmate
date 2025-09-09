@@ -32,14 +32,12 @@ type CategoryDetailPageProps = {
 
 // The Page Component
 export default async function CategoryDetailPage({params,}: CategoryDetailPageProps) {
-  const { category } = params;
-
-  const meals = await getMealsByCategory(category);
+  const meals = await getMealsByCategory(params.category);
 
   return (
     <CategoryDetailClient
       initialMeals={meals}
-      category={category} />
+      category={params.category} />
   );
 }
 
