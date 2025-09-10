@@ -31,14 +31,11 @@ type CategoryDetailPageProps = {
 
 
 // The Page Component
-export default async function CategoryDetailPage({params,}: CategoryDetailPageProps) {
-  const meals = await getMealsByCategory(params.category);
+export default async function CategoryDetailPage({ params }: CategoryDetailPageProps) {
+  const { category } = params;
+  const meals = await getMealsByCategory(category);
 
-  return (
-    <CategoryDetailClient
-      initialMeals={meals}
-      category={params.category} />
-  );
+  return <CategoryDetailClient initialMeals={meals} category={category} />;
 }
 
 

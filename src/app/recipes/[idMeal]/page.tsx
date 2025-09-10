@@ -1,6 +1,4 @@
 
-
-
 "use client";
 
 import { useEffect, useState, useContext } from "react";
@@ -71,8 +69,7 @@ export default function RecipeDetails() {
         alt={meal.strMeal}
         width={600}
         height={400}
-        className="w-full rounded-xl shadow-md mb-6"
-      />
+        className="w-full rounded-xl shadow-md mb-6"/>
 
       {/* Instructions */}
       <h2 className="text-2xl font-semibold mb-3 border-b pb-2 text-gray-800">
@@ -96,8 +93,8 @@ export default function RecipeDetails() {
               }`}
               title="YouTube video player"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+              allowFullScreen>
+              </iframe>
           </div>
         </div>
       )}

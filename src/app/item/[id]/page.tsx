@@ -24,10 +24,8 @@ async function getMealById(id: string): Promise<Meal | null> {
   }
 }
 
-export default async function ItemPage({ params }: ItemPageProps) {
-  // const { id } = await params;
-  // const meal = await getMealById(id); //function uses fetch and returns a Promise.
-          const meal = await getMealById(params.id);                                //getMealById(id) is asynchronous → you need await.
+export default async function ItemPage({ params: { id } }: ItemPageProps) {
+  const meal = await getMealById(id);
   if (!meal) {
     return (
       <div className="text-center p-10">

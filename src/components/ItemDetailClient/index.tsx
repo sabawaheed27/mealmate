@@ -13,31 +13,27 @@ interface ItemDetailClientProps {
 
 export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
     const router = useRouter();
-    const userContext = useContext(UserContext);
-    //Uses UserContext to check if a user is logged in.
-    // Redirect if user is not logged in
-    useEffect(() => {
-        if (!userContext || !userContext.user) {
-            router.push("/");
-        }
-    }, [userContext, router]);
+    const userContext = useContext(UserContext)!; // We can now assume the context is available
 
-    if (!userContext || !userContext.user) {
-        return (
-            <div className="text-center p-10">
-                <p className="text-lg text-gray-400">Redirecting...</p>
-            </div>
-        ); //While redirecting, it shows a placeholder message.
-    }
+    // The middleware now handles the redirection, so we don't need
+    // the loading/redirecting state here. The user will always be authenticated.
+    // if (!userContext || !userContext.user) { ... } check is no longer needed.
 
     const { user, setUser } = userContext;
 
-    const saveToFavourites = () => {
+    const toggleFavourite = () => {
         if (user && meal) {
-            const isSaved = user.favouriteRecipes.some(
+            const isAlreadySaved = user.favouriteRecipes.some(
                 (r) => r.idMeal === meal.idMeal
             );
-            if (!isSaved) {
+            if (isAlreadySaved) {
+                // Remove from favorites
+                const updatedFavorites = user.favouriteRecipes.filter(
+                    (r) => r.idMeal !== meal.idMeal
+                );
+                setUser({ ...user, favouriteRecipes: updatedFavorites });
+            } else {
+                // Add to favorites
                 setUser({ ...user, favouriteRecipes: [...user.favouriteRecipes, meal] });
             }
         }
@@ -52,6 +48,11 @@ export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
         }));    //Filters keys that start with "strIngredient" and have values.
                 //Matches each ingredient with its corresponding strMeasureX.
                 //Produces an array of { ingredient, measure }.
+
+    // Safely calculate this for rendering, only when user exists.
+    const isAlreadySaved = user?.favouriteRecipes.some(
+        (r) => r.idMeal === meal.idMeal
+    ) ?? false;
 
     return (
         <div className="max-w-4xl mx-auto p-6 sm:p-8">
@@ -76,9 +77,13 @@ export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={saveToFavourites}
-                    className="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-md font-semibold transition-colors">
-                    ❤️ Save to Favourites
+                    onClick={toggleFavourite}
+                    className={`px-4 py-2 rounded-md font-semibold transition-colors ${
+                        isAlreadySaved
+                            ? "bg-pink-500 hover:bg-pink-600 text-white"
+                            : "bg-teal-500 hover:bg-teal-600 text-white"
+                    }`}>
+                    {isAlreadySaved ? "❤️ Saved" : "🤍 Save to Favourites"}
                 </motion.button>
                 {meal.strYoutube && (
                     <motion.a
@@ -111,10 +116,14 @@ export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {ingredients.map((ing, i) => (
                         <motion.li
-                            key={i}
+                            key={ing.ingredient}
                             variants={{
                                 hidden: { opacity: 0, x: -20 },
-                                visible: { opacity: 1, x: 0 },
+                                visible: {
+                                    opacity: 1,
+                                    x: 0,
+                                    transition: { duration: 0.5 },
+                                },
                             }}
                             className="bg-gray-900 px-4 py-2 rounded-md shadow-md text-gray-300">
                             {ing.ingredient} -{" "}

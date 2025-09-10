@@ -92,8 +92,7 @@ export default function CategoryDetailClient({
         <p className="text-gray-400">Try selecting a different category.</p>
         <Link
           href="/"
-          className="mt-4 inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors"
-        >
+          className="mt-4 inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors">
           Back to Home
         </Link>
       </div>
@@ -121,16 +120,14 @@ export default function CategoryDetailClient({
           return (
             <div
               key={m.idMeal}
-              className="relative group bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-teal-500/40"
-            >
+              className="relative group bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-teal-500/40">
               <Link href={`/item/${m.idMeal}`}>
                 <Image
                   src={m.strMealThumb}
                   alt={m.strMeal}
                   width={400}
                   height={300}
-                  className="w-full h-52 object-cover"
-                />
+                  className="w-full h-52 object-cover"/>
                 <div className="p-4">
                   <p className="font-semibold text-gray-100 truncate line-clamp-2 group-hover:text-teal-400 transition-colors duration-300">
                     {m.strMeal}
@@ -143,8 +140,7 @@ export default function CategoryDetailClient({
                   isSaved
                     ? "bg-pink-500 hover:bg-pink-600"
                     : "bg-teal-500 hover:bg-teal-600"
-                }`}
-              >
+                }`}>
                 {isSaved ? "Saved" : "Fav"}
               </button>
             </div>
