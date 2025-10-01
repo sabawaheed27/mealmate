@@ -1,3 +1,150 @@
+
+// "use client";
+
+// import { useState, useContext, useEffect, useCallback } from "react";
+// import Link from "next/link";
+// import Image from "next/image";
+// import { useRouter } from "next/navigation";
+// import { UserContext } from "@/context/UserContext";
+// import { MealSummary, Meal } from "@/utils/type"; // Import Meal for full meal object
+// import BackButton from "@/components/BackButton";
+
+// interface CategoryDetailClientProps {
+//   initialMeals: MealSummary[]; // Now receives meals as a prop
+//   category: string; // Category name as a prop
+// }
+
+// export default function CategoryDetailClient({
+//   initialMeals,
+//   category,
+// }: CategoryDetailClientProps) {
+//   const router = useRouter();
+//   const userContext = useContext(UserContext);
+//   const [savedMeals, setSavedMeals] = useState<string[]>([]);
+
+//   const { user, setUser } = userContext || {};
+
+//   const toggleFavorite = useCallback(
+//     async (mealSummary: MealSummary) => { // Renamed to mealSummary to avoid confusion
+//       if (!user || !setUser) return;
+//       const isSaved = user.favouriteRecipes.some(
+//         (r) => r.idMeal === mealSummary.idMeal
+//       );
+
+//       setSavedMeals((prev) =>
+//         isSaved ? prev.filter((id) => id !== mealSummary.idMeal) : [...prev, mealSummary.idMeal]
+//       );
+
+//       if (isSaved) {
+//         const updatedFavorites = user.favouriteRecipes.filter(
+//           (r) => r.idMeal !== mealSummary.idMeal
+//         );
+//         setUser({ ...user, favouriteRecipes: updatedFavorites });
+//       } else {
+//         try {
+//           // Fetch full details before saving, as favouriteRecipes expects Meal type
+//           const response = await fetch(
+//             `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealSummary.idMeal}`
+//           );
+//           const data = await response.json();
+//           if (data.meals && data.meals[0]) {
+//             const fullMeal: Meal = data.meals[0]; // Ensure it's typed as Meal
+//             setUser({
+//               ...user,
+//               favouriteRecipes: [...user.favouriteRecipes, fullMeal],
+//             });
+//           }
+//         } catch (error) {
+//           console.error("Failed to fetch full meal details:", error);
+//         }
+//       }
+//     },
+//     [user, setUser]
+//   );
+
+//   const favouriteRecipes = user?.favouriteRecipes;
+//   useEffect(() => {
+//     if (!user) {
+//       router.push("/");
+//     } else if (favouriteRecipes) {
+//       setSavedMeals(favouriteRecipes.map((r) => r.idMeal));
+//     }
+//   }, [user, favouriteRecipes, router]);
+
+//   if (!user) {
+//     return null;
+//   }
+
+//   if (initialMeals.length === 0) {
+//     return (
+//       <div className="text-center p-10 text-gray-200">
+//         <BackButton />
+//         <h1 className="text-3xl font-bold mb-2 text-pink-400">
+//           No Meals Found in {decodeURIComponent(category)}
+//         </h1>
+//         <p className="text-gray-400">Try selecting a different category.</p>
+//         <Link
+//           href="/"
+//           className="mt-4 inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors">
+//           Back to Home
+//         </Link>
+//       </div>
+//     );
+//   }
+
+//   return (
+//     <div className="max-w-6xl mx-auto p-6 sm:p-8 bg-gray-900 min-h-screen text-gray-100">
+//       <div className="mb-6">
+//         <BackButton />
+//       </div>
+
+//       <h1 className="text-3xl md:text-4xl font-bold mb-3">
+//         Meals in{" "}
+//         <span className="text-teal-400">{decodeURIComponent(category)}</span>
+//       </h1>
+//       <p className="text-gray-400 mb-8">
+//         Browse the delicious meals in this category.
+//       </p>
+
+//       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+//         {initialMeals.map((m) => {
+//           const isSaved = savedMeals.includes(m.idMeal);
+//           return (
+//             <div
+//               key={m.idMeal}
+//               className="relative group bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-teal-500/40">
+//               <Link href={`/item/${m.idMeal}`}>
+//                 <Image
+//                   src={m.strMealThumb}
+//                   alt={m.strMeal}
+//                   width={400}
+//                   height={300}
+//                   className="w-full h-52 object-cover"/>
+//                 <div className="p-4">
+//                   <p className="font-semibold text-gray-100 truncate line-clamp-2 group-hover:text-teal-400 transition-colors duration-300">
+//                     {m.strMeal}
+//                   </p>
+//                 </div>
+//               </Link>
+//               <button
+//                 onClick={() => toggleFavorite(m)}
+//                 className={`absolute top-2 right-2 px-3 py-1 rounded-full text-white font-semibold text-sm shadow-md transition-colors ${
+//                   isSaved
+//                     ? "bg-pink-500 hover:bg-pink-600"
+//                     : "bg-teal-500 hover:bg-teal-600"
+//                 }`}>
+//                 {isSaved ? "Saved" : "Fav"}
+//               </button>
+//             </div>
+//           );
+//         })}
+//       </div>
+//     </div>
+//   );
+// }
+
+
+
 "use client";
 
 import { useState, useContext, useEffect, useCallback } from "react";
@@ -5,7 +152,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { UserContext } from "@/context/UserContext";
-import { MealSummary } from "@/utils/type";
+import { MealSummary, Meal } from "@/utils/type";
+import { getMealById } from "@/utils/api"; 
 import BackButton from "@/components/BackButton";
 
 interface CategoryDetailClientProps {
@@ -20,133 +168,117 @@ export default function CategoryDetailClient({
   const router = useRouter();
   const userContext = useContext(UserContext);
   const [savedMeals, setSavedMeals] = useState<string[]>([]);
-
-  // Hooks must be called at the top level.
-  // We can destructure user and setUser here, they will be undefined on the first render if context is not ready.
   const { user, setUser } = userContext || {};
 
-  // 🔹 Toggle favourite meals
   const toggleFavorite = useCallback(
-    async (meal: MealSummary) => {
+    async (mealSummary: MealSummary) => {
       if (!user || !setUser) return;
+
       const isSaved = user.favouriteRecipes.some(
-        (r) => r.idMeal === meal.idMeal
+        (r) => r.idMeal === mealSummary.idMeal
       );
 
-      // Optimistic UI update
       setSavedMeals((prev) =>
-        isSaved ? prev.filter((id) => id !== meal.idMeal) : [...prev, meal.idMeal]
+        isSaved
+          ? prev.filter((id) => id !== mealSummary.idMeal)
+          : [...prev, mealSummary.idMeal]
       );
 
       if (isSaved) {
-        // Remove from favorites
         const updatedFavorites = user.favouriteRecipes.filter(
-          (r) => r.idMeal !== meal.idMeal
+          (r) => r.idMeal !== mealSummary.idMeal
         );
         setUser({ ...user, favouriteRecipes: updatedFavorites });
       } else {
-        // Fetch full details before saving
-        try {
-          const response = await fetch(
-            `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`
-          );
-          const data = await response.json();
-          if (data.meals && data.meals[0]) {
-            const fullMeal = data.meals[0];
-            setUser({
-              ...user,
-              favouriteRecipes: [...user.favouriteRecipes, fullMeal],
-            });
-          }
-        } catch (error) {
-          console.error("Failed to fetch full meal details:", error);
+        const fullMeal: Meal | null = await getMealById(mealSummary.idMeal);
+        if (fullMeal) {
+          setUser({
+            ...user,
+            favouriteRecipes: [...user.favouriteRecipes, fullMeal],
+          });
         }
       }
     },
     [user, setUser]
   );
 
-  // 🔹 Redirect if no user, otherwise load saved meals
-  const favouriteRecipes = user?.favouriteRecipes;
   useEffect(() => {
     if (!user) {
       router.push("/");
-    } else if (favouriteRecipes) {
-      setSavedMeals(favouriteRecipes.map((r) => r.idMeal));
+    } else if (user.favouriteRecipes) {
+      setSavedMeals(user.favouriteRecipes.map((r) => r.idMeal));
     }
-  }, [user, favouriteRecipes, router]);
+  }, [user, router]);
 
-  //  Early return if no user
-  if (!user) {
-    return null; // Could render a spinner or placeholder
-  }
-
-  // 🔹 No meals found
-  if (initialMeals.length === 0) {
-    return (
-      <div className="text-center p-10 text-gray-200">
-        <BackButton />
-        <h1 className="text-3xl font-bold mb-2 text-pink-400">
-          No Meals Found in {decodeURIComponent(category)}
-        </h1>
-        <p className="text-gray-400">Try selecting a different category.</p>
-        <Link
-          href="/"
-          className="mt-4 inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors">
-          Back to Home
-        </Link>
-      </div>
-    );
-  }
-
-  // 🔹 Render meals grid
   return (
     <div className="max-w-6xl mx-auto p-6 sm:p-8 bg-gray-900 min-h-screen text-gray-100">
-      <div className="mb-6">
-        <BackButton />
-      </div>
+      {!user ? null : initialMeals.length === 0 ? (
+        <div className="text-center p-10 text-gray-200">
+          <BackButton />
+          <h1 className="text-3xl font-bold mb-2 text-pink-400">
+            No Meals Found in {decodeURIComponent(category)}
+          </h1>
+          <p className="text-gray-400">Try selecting a different category.</p>
+          <Link
+            href="/"
+            className="mt-4 inline-block bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors"
+          >
+            Back to Home
+          </Link>
+        </div>
+      ) : (
+        <>
+          <div className="mb-6">
+            <BackButton />
+          </div>
 
-      <h1 className="text-3xl md:text-4xl font-bold mb-3">
-        Meals in{" "}
-        <span className="text-teal-400">{decodeURIComponent(category)}</span>
-      </h1>
-      <p className="text-gray-400 mb-8">
-        Browse the delicious meals in this category.
-      </p>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3">
+            Meals in{" "}
+            <span className="text-teal-400">{decodeURIComponent(category)}</span>
+          </h1>
+          <p className="text-gray-400 mb-8">
+            Browse the delicious meals in this category.
+          </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {initialMeals.map((m) => {
-          const isSaved = savedMeals.includes(m.idMeal);
-          return (
-            <div
-              key={m.idMeal}
-              className="relative group bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-teal-500/40">
-              <Link href={`/item/${m.idMeal}`}>
-                <Image
-                  src={m.strMealThumb}
-                  alt={m.strMeal}
-                  width={400}
-                  height={300}
-                  className="w-full h-52 object-cover"/>
-                <div className="p-4">
-                  <p className="font-semibold text-gray-100 truncate line-clamp-2 group-hover:text-teal-400 transition-colors duration-300">
-                    {m.strMeal}
-                  </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            {initialMeals.map((m) => {
+              const isSaved = savedMeals.includes(m.idMeal);
+              return (
+                <div
+                  key={m.idMeal}
+                  className="relative group bg-gray-800 rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:scale-105 hover:shadow-teal-500/40"
+                >
+                  <Link href={`/item/${m.idMeal}`}>
+                    <Image
+                      src={m.strMealThumb}
+                      alt={m.strMeal}
+                      width={400}
+                      height={300}
+                      className="w-full h-52 object-cover"
+                    />
+                    <div className="p-4">
+                      <p className="font-semibold text-gray-100 truncate line-clamp-2 group-hover:text-teal-400 transition-colors duration-300">
+                        {m.strMeal}
+                      </p>
+                    </div>
+                  </Link>
+                  <button
+                    onClick={() => toggleFavorite(m)}
+                    className={`absolute top-2 right-2 px-3 py-1 rounded-full text-white font-semibold text-sm shadow-md transition-colors ${
+                      isSaved
+                        ? "bg-pink-500 hover:bg-pink-600"
+                        : "bg-teal-500 hover:bg-teal-600"
+                    }`}
+                  >
+                    {isSaved ? "Saved" : "Fav"}
+                  </button>
                 </div>
-              </Link>
-              <button
-                onClick={() => toggleFavorite(m)}
-                className={`absolute top-2 right-2 px-3 py-1 rounded-full text-white font-semibold text-sm shadow-md transition-colors ${
-                  isSaved
-                    ? "bg-pink-500 hover:bg-pink-600"
-                    : "bg-teal-500 hover:bg-teal-600"
-                }`}>
-                {isSaved ? "Saved" : "Fav"}
-              </button>
-            </div>
-          );
-        })}
-      </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 }
+

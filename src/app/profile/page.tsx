@@ -51,8 +51,9 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
+
       {/* Main content */}
-      <div className="relative max-w-5xl mx-auto p-8 rounded-xl shadow-lg space-y-10 overflow-hidden flex-1">
+    <div className="relative max-w-5xl mx-auto p-8 rounded-xl shadow-lg space-y-10 overflow-hidden flex-1">
         <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-gray-900/90 to-emerald-900/80" />
         <div className="relative z-10 text-white">
           <BackButton />

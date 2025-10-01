@@ -1,17 +1,35 @@
 
-export type Meal = {
-  idMeal: string;
-  strMeal: string;
-  strMealThumb: string;
-  strInstructions?: string;
-  strYoutube?: string;
-  [key: string]: string | undefined;
+export type Category = {
+  idCategory: string;
+  strCategory: string; // Corrected: should be strCategory, not strMeal
+  strCategoryThumb: string; // Corrected: should be strCategoryThumb, not strMealThumb
+  strCategoryDescription: string; // Added: typical category property
 };
 
 export type MealSummary = {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
+};
+
+// Define the full Meal type, as used in favouriteRecipes
+export type Meal = {
+  idMeal: string;
+  strMeal: string;
+  strDrinkAlternate: string | null;
+  strCategory: string;
+  strArea: string;
+  strInstructions: string;
+  strMealThumb: string;
+  strTags: string | null;
+  strYoutube: string | null;
+  strSource: string | null;
+  strImageSource: string | null;
+  strCreativeCommonsConfirmed: string | null;
+  dateModified: string | null;
+  // Ingredients and Measures (up to 20)
+  [key: `strIngredient${number}`]: string | null;
+  [key: `strMeasure${number}`]: string | null;
 };
 
 export interface UserType {

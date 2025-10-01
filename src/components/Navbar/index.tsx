@@ -10,7 +10,7 @@ import Link from "next/link";
 const Navbar = () => {
   const router = useRouter();
   const userContext = useContext(UserContext);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false); //toggles mobile menu
 
   if (!userContext) return null;
   const { user, logout } = userContext;

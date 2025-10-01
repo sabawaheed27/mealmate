@@ -116,7 +116,7 @@ export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
                 <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {ingredients.map((ing, i) => (
                         <motion.li
-                            key={ing.ingredient}
+                            key={`${ing.ingredient}-${i}`}
                             variants={{
                                 hidden: { opacity: 0, x: -20 },
                                 visible: {
@@ -135,5 +135,3 @@ export default function ItemDetailClient({ meal }: ItemDetailClientProps) {
         </div>
     );
 }
-
-//ItemDetailClient → displays the full recipe.
