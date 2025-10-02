@@ -1,8 +1,8 @@
 
 export type Category = {
   idCategory: string;
-  strCategory: string; // Corrected: should be strCategory, not strMeal
-  strCategoryThumb: string; // Corrected: should be strCategoryThumb, not strMealThumb
+  strCategory: string; 
+  strCategoryThumb: string; 
   strCategoryDescription: string; // Added: typical category property
 };
 

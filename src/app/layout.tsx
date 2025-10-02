@@ -12,11 +12,7 @@ export const metadata: Metadata = {
   description: "Food app using context & dynamic routing",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children,}: Readonly<{children: React.ReactNode;}>) {
   return (
     <html lang="en">
       <body className="bg-gray-50 text-gray-800" >

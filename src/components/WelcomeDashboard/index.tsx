@@ -1,5 +1,4 @@
 
-
 "use client";
 
 import { useEffect, useState, ReactNode, useContext } from "react";
@@ -42,15 +41,13 @@ export default function WelcomeDashboard({ children }: Props) {
     <div
       className={`flex flex-col items-center justify-center gap-4 min-h-screen px-4 sm:px-6 transition-all duration-1000 ${
         fadeOut ? "opacity-0 scale-95" : "opacity-100 scale-100"
-      } bg-gradient-to-b from-emerald-50 to-white`}
-    >
+      } bg-gradient-to-b from-emerald-50 to-white`}>
       <Image
         src="/images/recipe1.jpg"
         alt="Welcome"
         width={256}
         height={256}
-        className="w-48 h-48 sm:w-64 sm:h-64 object-cover rounded-lg shadow-lg"
-      />
+        className="w-48 h-48 sm:w-64 sm:h-64 object-cover rounded-lg shadow-lg"/>
 
       <h2 className="text-xl sm:text-2xl font-bold text-emerald-700 text-center">
         Welcome, {user.name}! 🍴
