@@ -57,7 +57,7 @@ export default function Footer() {
             <a
               href="mailto:saba_sh27@hotmail.com"
               className="hover:underline hover:text-orange-300">
-              youremail@example.com
+              saba_sh27@hotmail.com
             </a>
           </p>
           <p className="flex items-center gap-2">
