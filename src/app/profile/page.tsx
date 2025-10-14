@@ -4,6 +4,7 @@ import { UserContext } from "@/context/UserContext";
 import { useCallback, useContext } from "react";
 import Image from "next/image";
 import BackButton from "@/components/BackButton";
+import Link from "next/link";
 
 // Define clear types for the data structures used in this component.
 interface Recipe {
@@ -70,7 +71,9 @@ export default function ProfilePage() {
                   <div
                     key={c}
                     className="flex items-center gap-2 bg-emerald-500/20 border border-emerald-400 text-emerald-200 px-3 py-1 rounded-full">
-                    <span className="font-medium">{c}</span>
+                    <Link href={`/categories/${c}`} className="font-medium hover:text-teal-300 transition">
+                      {c}
+                    </Link>
                     <button
                       onClick={() => removeCategory(c)}
                       className="text-sm bg-red-500 hover:bg-red-600 text-white rounded-full px-2 py-0.5 transition">
@@ -95,15 +98,17 @@ export default function ProfilePage() {
                   <li
                     key={r.idMeal}
                     className="flex justify-between items-center py-4 hover:bg-gray-800/40 rounded-lg px-2 transition">
-                    <div className="flex items-center gap-4">
-                      <Image
-                        src={r.strMealThumb}
-                        alt={r.strMeal}
-                        width={64}
-                        height={64}
-                        className="object-cover rounded-lg shadow-sm" />
-                      <span className="font-medium">{r.strMeal}</span>
-                    </div>
+                    <Link href={`/item/${r.idMeal}`} className="flex items-center gap-4 group">
+                      <div className="flex-shrink-0">
+                        <Image
+                          src={r.strMealThumb}
+                          alt={r.strMeal}
+                          width={64}
+                          height={64}
+                          className="object-cover rounded-lg shadow-sm" />
+                      </div>
+                      <span className="font-medium group-hover:text-teal-300 transition">{r.strMeal}</span>
+                    </Link>
                     <button
                       onClick={() => removeRecipe(r.idMeal)}
                       className="bg-red-500 hover:bg-red-600 text-sm px-3 py-1 rounded-lg transition">

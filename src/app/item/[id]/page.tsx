@@ -2,11 +2,11 @@ import { getMealById } from "@/utils/api";
 import ItemDetailClient from "@/components/ItemDetailClient";
 
 interface ItemPageProps {
-  params: Promise< { id: string }>;
+  params: { id: string };
 }
 
 export default async function ItemPage({ params }: ItemPageProps) {
-  const { id } = await params; 
+  const { id } = params;
   const meal = await getMealById(id);
   return !meal ? (
     <div className="text-center p-10">
